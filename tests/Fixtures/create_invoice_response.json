@@ -1,0 +1,21 @@
+{
+    "state": 0,
+    "result": {
+        "uuid": "1ec87133-b22d-4643-988f-cac29a6ac85d",
+        "order_id": "order-42",
+        "amount": "15.00",
+        "payment_amount": null,
+        "payer_amount": "15.00",
+        "payer_currency": "USDT",
+        "currency": "USD",
+        "merchant_amount": "14.91",
+        "network": "tron",
+        "address": "TDD97yguPESTpcrJMqU6h2ozZbibv4Vaqm",
+        "payment_status": "check",
+        "url": "https://pay.heleket.com/pay/1ec87133-b22d-4643-988f-cac29a6ac85d",
+        "expired_at": 1753202502,
+        "is_final": false,
+        "created_at": "2026-05-20T10:00:00+03:00",
+        "commission": "0.09"
+    }
+}

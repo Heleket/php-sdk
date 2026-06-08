@@ -1,0 +1,119 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Heleket webhook inspector.
+ *
+ * Reads a JSON webhook payload from stdin (or --file=<path>), verifies its
+ * signature against the provided API key, and prints a human-readable report:
+ *
+ *     $ cat webhook.json | bin/heleket-webhook-inspect --key=$HELEKET_PAYMENT_KEY
+ *     $ bin/heleket-webhook-inspect --key=$KEY --file=webhook.json
+ *     $ bin/heleket-webhook-inspect --key=$KEY --type=payout < webhook.json
+ *
+ * Exit codes:
+ *     0 — payload valid, signature verified
+ *     1 — payload could not be parsed
+ *     2 — signature does not match
+ *     3 — missing arguments
+ *
+ * Use this whenever a webhook fails to verify in production. The most common
+ * cause is the slash-escaping difference between PHP's json_encode (escapes
+ * `/` as `\/`) and other languages.
+ */
+
+$autoload = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($autoload)) {
+    $autoload = __DIR__ . '/../../../autoload.php';
+}
+if (!file_exists($autoload)) {
+    fwrite(STDERR, "Composer autoload not found. Run `composer install` in the SDK folder.\n");
+    exit(3);
+}
+require $autoload;
+
+use Heleket\Exception\SignatureException;
+use Heleket\Webhook\WebhookVerifier;
+
+$options = parse_args($argv);
+if (!isset($options['key'])) {
+    fwrite(STDERR, "Usage: heleket-webhook-inspect --key=<api-key> [--file=<path>] [--type=payment|payout]\n");
+    exit(3);
+}
+
+$rawBody = isset($options['file'])
+    ? @file_get_contents($options['file'])
+    : @stream_get_contents(STDIN);
+
+if ($rawBody === false || $rawBody === '') {
+    fwrite(STDERR, "No input received. Pipe a JSON payload to stdin or pass --file=<path>.\n");
+    exit(1);
+}
+
+$payload = json_decode($rawBody, true);
+if (!is_array($payload)) {
+    fwrite(STDERR, "Input is not valid JSON.\n");
+    exit(1);
+}
+
+echo "Heleket webhook inspector\n";
+echo str_repeat('-', 40), "\n";
+print_field('type',     $payload['type']      ?? '(missing)');
+print_field('uuid',     $payload['uuid']      ?? '(missing)');
+print_field('order_id', $payload['order_id']  ?? '(missing)');
+print_field('status',   $payload['status']    ?? '(missing)');
+print_field('amount',   $payload['amount']    ?? '(missing)');
+print_field('network',  $payload['network']   ?? '(missing)');
+print_field('txid',     $payload['txid']      ?? '(missing)');
+print_field('is_final', isset($payload['is_final']) ? ($payload['is_final'] ? 'yes' : 'no') : '(missing)');
+print_field('sign',     isset($payload['sign']) ? substr((string) $payload['sign'], 0, 16) . '…' : '(missing)');
+
+if (isset($options['type']) && $options['type'] !== ($payload['type'] ?? '')) {
+    fwrite(STDERR, "\nWarning: --type=" . $options['type'] . " but payload type is " . ($payload['type'] ?? '(missing)') . "\n");
+}
+
+$verifier = new WebhookVerifier($options['key']);
+try {
+    $verifier->verify($payload);
+    echo "\nsignature: \033[32mvalid\033[0m\n";
+    exit(0);
+} catch (SignatureException $exception) {
+    echo "\nsignature: \033[31mINVALID\033[0m — ", $exception->getMessage(), "\n";
+    echo "Hints:\n";
+    echo "  - Are you using the same API key as the one configured at the time the webhook was sent?\n";
+    echo "  - Payment webhooks sign with the payment key; payout webhooks sign with the payout key.\n";
+    echo "  - If the payload comes from a non-PHP sender, forward slashes (/) may not be escaped; PHP json_encode escapes them by default.\n";
+    exit(2);
+}
+
+/**
+ * @param list<string> $argv
+ * @return array<string, string>
+ */
+function parse_args(array $argv): array
+{
+    $out = [];
+    foreach (array_slice($argv, 1) as $arg) {
+        if (strncmp($arg, '--', 2) !== 0) {
+            continue;
+        }
+        $arg = substr($arg, 2);
+        $eq = strpos($arg, '=');
+        if ($eq === false) {
+            $out[$arg] = '1';
+        } else {
+            $out[substr($arg, 0, $eq)] = substr($arg, $eq + 1);
+        }
+    }
+    return $out;
+}
+
+/**
+ * @param mixed $value
+ */
+function print_field(string $name, $value): void
+{
+    printf("  %-10s %s\n", $name, is_scalar($value) || $value === null ? (string) $value : json_encode($value));
+}

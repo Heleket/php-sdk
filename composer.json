@@ -1,0 +1,45 @@
+{
+    "name": "heleket/php-integration-reference",
+    "description": "Reference PHP integration for the Heleket cryptocurrency payment API. Full SDK, runnable examples, tests, and Docker harness.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["heleket", "crypto", "payments", "payouts", "sdk", "api"],
+    "homepage": "https://doc.heleket.com/",
+    "require": {
+        "php": ">=7.4",
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.50"
+    },
+    "autoload": {
+        "psr-4": {
+            "Heleket\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Heleket\\Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/heleket-webhook-inspect"
+    ],
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse",
+        "cs": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix",
+        "qa": [
+            "@test",
+            "@stan",
+            "@cs"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

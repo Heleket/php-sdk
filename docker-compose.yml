@@ -1,0 +1,34 @@
+services:
+  cli:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: heleket-php-sdk:dev
+    volumes:
+      - ./:/app
+    working_dir: /app
+    env_file:
+      - .env
+    command: sh
+
+  webhook:
+    image: heleket-php-sdk:dev
+    depends_on:
+      - cli
+    volumes:
+      - ./:/app
+    working_dir: /app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    command: php -S 0.0.0.0:8000 examples/05_handle_webhook.php
+
+  qa:
+    image: heleket-php-sdk:dev
+    depends_on:
+      - cli
+    volumes:
+      - ./:/app
+    working_dir: /app
+    command: sh -c "composer install --no-interaction && make qa"

@@ -1,0 +1,17 @@
+{
+    "type": "payment",
+    "uuid": "1ec87133-b22d-4643-988f-cac29a6ac85d",
+    "order_id": "order-42",
+    "amount": "15.00",
+    "payment_amount": "15.00",
+    "payment_amount_usd": "15.00",
+    "merchant_amount": "14.91",
+    "commission": "0.09",
+    "is_final": true,
+    "status": "paid",
+    "from": "TXyz...",
+    "network": "tron",
+    "currency": "USD",
+    "payer_currency": "USDT",
+    "txid": "deadbeef"
+}
