@@ -6,9 +6,9 @@ declare(strict_types=1);
  * Shared bootstrap for every example script.
  *
  *  - Autoloads the SDK via Composer
- *  - Loads .env (or .env.example as a fallback for read-only smoke testing)
- *  - Exposes env_require(), env_optional(), make_payment_client(), make_payout_client(),
- *    print_result()
+ *  - Loads .env if present (real environment variables take precedence)
+ *  - Exposes env_require(), env_optional(), heleket_config(), make_payment_client(),
+ *    make_payout_client(), print_result()
  *
  * Intentionally minimal — no external dependency on phpdotenv. ~30 lines.
  */
@@ -62,22 +62,25 @@ function env_optional(string $name, string $default = ''): string
     return ($value === false || $value === '') ? $default : $value;
 }
 
-function make_payment_client(): \Heleket\PaymentClient
+function heleket_config(string $apiKey): \Heleket\Config
 {
-    return \Heleket\Client::payment(
-        env_require('HELEKET_PAYMENT_KEY'),
+    return new \Heleket\Config(
         env_require('HELEKET_MERCHANT_ID'),
+        $apiKey,
+        env_optional('HELEKET_BASE_URL', \Heleket\Config::DEFAULT_BASE_URL),
+        \Heleket\Config::DEFAULT_TIMEOUT_SECONDS,
         env_optional('HELEKET_DEBUG', '0') === '1'
     );
 }
 
+function make_payment_client(): \Heleket\PaymentClient
+{
+    return \Heleket\Client::paymentWith(heleket_config(env_require('HELEKET_PAYMENT_KEY')));
+}
+
 function make_payout_client(): \Heleket\PayoutClient
 {
-    return \Heleket\Client::payout(
-        env_require('HELEKET_PAYOUT_KEY'),
-        env_require('HELEKET_MERCHANT_ID'),
-        env_optional('HELEKET_DEBUG', '0') === '1'
-    );
+    return \Heleket\Client::payoutWith(heleket_config(env_require('HELEKET_PAYOUT_KEY')));
 }
 
 /**
