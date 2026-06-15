@@ -1,6 +1,11 @@
-# Heleket PHP integration (reference)
+# Heleket PHP SDK
 
-A production-grade reference integration for the [Heleket](https://heleket.com) cryptocurrency payment API. Covers the full documented surface (payments, payouts, balance, services, exchange rates), ships with unit tests, runnable examples, a debug mode, a webhook inspector CLI, and a Docker harness.
+[![Packagist Version](https://img.shields.io/packagist/v/heleket/php-sdk)](https://packagist.org/packages/heleket/php-sdk)
+[![Total Downloads](https://img.shields.io/packagist/dt/heleket/php-sdk)](https://packagist.org/packages/heleket/php-sdk)
+[![License](https://img.shields.io/packagist/l/heleket/php-sdk)](LICENSE)
+[![CI](https://github.com/Heleket/php-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/Heleket/php-sdk/actions/workflows/ci.yml)
+
+The official PHP SDK for the [Heleket](https://heleket.com) cryptocurrency payment API. Covers the full documented surface (payments, payouts, balance, services, exchange rates), ships with unit tests, runnable examples, a debug mode, a webhook inspector CLI, and a Docker harness.
 
 Built to be copied or `composer require`'d directly into your project. Zero runtime dependencies — only `ext-curl` and `ext-json` (bundled with PHP).
 
@@ -25,7 +30,7 @@ echo $invoice['url']; // → https://pay.heleket.com/pay/<uuid>
 ## Install
 
 ```bash
-composer require heleket/php-integration-reference
+composer require heleket/php-sdk
 ```
 
 …or clone this folder into your project and add it to your autoloader.
@@ -79,6 +84,19 @@ make help                 # Full target list
 - **Never log raw API keys** — the debug dumper logs only the request method, URL, and body (never headers), but a misconfigured logger wrapping the SDK can still capture credentials.
 - **Two separate API keys** — payments and payouts. Don't mix them up; webhooks of the wrong kind will fail verification.
 
+## Releasing
+
+Versions are published to Packagist automatically from git tags on
+[`github.com/Heleket/php-sdk`](https://github.com/Heleket/php-sdk) (the Packagist ↔ GitHub webhook is already wired up).
+
+1. Land changes on `main`; make sure `make qa` is green.
+2. Update [`CHANGELOG.md`](CHANGELOG.md).
+3. Tag and push: `git tag 2.1.0 && git push origin 2.1.0`.
+
+Packagist picks up the new tag within a minute. The version reported in the `User-Agent` header is read from Composer at runtime, so there is nothing else to bump.
+
+**Major versions:** the 1.x line lives on the `1.x` branch (tag `1.0.0`) and must keep working — never delete or move old tags. See [`UPGRADING.md`](UPGRADING.md) for the 1.x → 2.x migration guide.
+
 ## License
 
-MIT.
+MIT — see [`LICENSE`](LICENSE).

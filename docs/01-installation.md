@@ -20,7 +20,7 @@ The bundled Docker image (see `docker/Dockerfile`) uses PHP 8.3 for exactly this
 ## Install via Composer
 
 ```bash
-composer require heleket/php-integration-reference
+composer require heleket/php-sdk
 ```
 
 Then in your bootstrap:

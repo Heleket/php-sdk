@@ -79,7 +79,7 @@ abstract class AbstractClient
             'merchant'     => $this->config->getMerchantId(),
             'sign'         => $sign,
             'Content-Type' => 'application/json',
-            'User-Agent'   => Version::USER_AGENT,
+            'User-Agent'   => Version::userAgent(),
         ];
 
         if ($this->config->isDebug()) {

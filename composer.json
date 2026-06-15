@@ -1,10 +1,21 @@
 {
-    "name": "heleket/php-integration-reference",
-    "description": "Reference PHP integration for the Heleket cryptocurrency payment API. Full SDK, runnable examples, tests, and Docker harness.",
+    "name": "heleket/php-sdk",
+    "description": "Official PHP SDK for the Heleket cryptocurrency payment API: payments, payouts, balance, exchange rates, and signed webhooks. Zero runtime dependencies.",
     "type": "library",
     "license": "MIT",
     "keywords": ["heleket", "crypto", "payments", "payouts", "sdk", "api"],
     "homepage": "https://doc.heleket.com/",
+    "authors": [
+        {
+            "name": "Heleket",
+            "homepage": "https://heleket.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Heleket/php-sdk/issues",
+        "source": "https://github.com/Heleket/php-sdk",
+        "docs": "https://doc.heleket.com/"
+    },
     "require": {
         "php": ">=7.4",
         "ext-curl": "*",

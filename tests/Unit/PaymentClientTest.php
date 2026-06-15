@@ -40,8 +40,8 @@ final class PaymentClientTest extends TestCase
         self::assertSame('https://api.heleket.com/v1/payment', $request['url']);
         self::assertSame(self::MERCHANT_ID, $request['headers']['merchant']);
         self::assertSame('application/json', $request['headers']['Content-Type']);
-        self::assertSame(Version::USER_AGENT, $request['headers']['User-Agent']);
-        self::assertSame('heleket-php-sdk/' . Version::VERSION, $request['headers']['User-Agent']);
+        self::assertSame(Version::userAgent(), $request['headers']['User-Agent']);
+        self::assertSame('heleket-php-sdk/' . Version::version(), $request['headers']['User-Agent']);
 
         $expectedBody = (string) json_encode([
             'amount'   => '15',
