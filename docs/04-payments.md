@@ -54,6 +54,25 @@ $info = $client->getInfo(orderId: 'order-42');
 echo $info['status']; // see docs/10-reference.md for the full enumeration
 ```
 
+## getAmlLinks
+
+`getAmlLinks(?string $uuid = null, ?string $orderId = null): array`  →  `POST /v1/payment/aml-links`
+
+Provide one of `uuid` or `orderId`. Returns a list of questionnaire links the end
+user must complete to unblock a blocked (locked) payment. Each item has `link`
+(the URL to hand to the user), `expired_at`, and `status` — see
+`Heleket\Enum\AmlLinkStatus` and the status table in docs/10-reference.md.
+
+```php
+$links = $client->getAmlLinks(uuid: $invoiceUuid);
+// or
+$links = $client->getAmlLinks(orderId: 'order-42');
+
+foreach ($links as $link) {
+    printf("%s — %s (expires %s)\n", $link['link'], $link['status'], $link['expired_at']);
+}
+```
+
 ## listHistory
 
 `listHistory(?string $dateFrom = null, ?string $dateTo = null, ?string $cursor = null): array`  →  `POST /v1/payment/list`
@@ -192,7 +211,7 @@ foreach ($balance[0]['balance']['merchant'] as $row) {
 
 ## getExchangeRates
 
-`getExchangeRates(string $currency): array`  →  `POST /v1/exchange-rate/{currency}/list`
+`getExchangeRates(string $currency): array`  →  `GET /v1/exchange-rate/{currency}/list`
 
 ```php
 $rates = $client->getExchangeRates('USD');

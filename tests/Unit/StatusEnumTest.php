@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Heleket\Tests\Unit;
 
+use Heleket\Enum\AmlLinkStatus;
 use Heleket\Enum\PaymentStatus;
 use Heleket\Enum\PayoutStatus;
 use PHPUnit\Framework\TestCase;
@@ -28,5 +29,18 @@ final class StatusEnumTest extends TestCase
         self::assertTrue(PayoutStatus::isSuccessful(PayoutStatus::PAID));
         self::assertFalse(PayoutStatus::isFinal(PayoutStatus::CHECK));
         self::assertFalse(PayoutStatus::isSuccessful(PayoutStatus::FAIL));
+    }
+
+    public function testAmlLinkStatusClassification(): void
+    {
+        self::assertTrue(AmlLinkStatus::isFinal(AmlLinkStatus::COMPLETED));
+        self::assertTrue(AmlLinkStatus::isFinal(AmlLinkStatus::EXPIRED));
+        self::assertFalse(AmlLinkStatus::isFinal(AmlLinkStatus::INIT));
+        self::assertFalse(AmlLinkStatus::isFinal(AmlLinkStatus::PENDING));
+
+        self::assertTrue(AmlLinkStatus::isSuccessful(AmlLinkStatus::COMPLETED));
+        self::assertFalse(AmlLinkStatus::isSuccessful(AmlLinkStatus::EXPIRED));
+        self::assertFalse(AmlLinkStatus::isSuccessful(AmlLinkStatus::PENDING));
+        self::assertFalse(AmlLinkStatus::isSuccessful(AmlLinkStatus::INIT));
     }
 }

@@ -41,6 +41,24 @@ PaymentStatus::isSuccessful($status);
 
 Helpers in `Heleket\Enum\PayoutStatus`.
 
+## AML link statuses
+
+Returned per item by `getAmlLinks()` for a blocked (locked) payment.
+
+| Status | Final? | Successful? | Meaning |
+|---|---|---|---|
+| `init` | — | — | Link created |
+| `pending` | — | — | Questionnaire in progress |
+| `completed` | ✓ | ✓ | Questionnaire completed |
+| `expired` | ✓ | — | Link expired before completion |
+
+Helpers in `Heleket\Enum\AmlLinkStatus`:
+
+```php
+AmlLinkStatus::isFinal($status);
+AmlLinkStatus::isSuccessful($status);
+```
+
 ## Exchange-rate sources
 
 `Heleket\Enum\CourseSource`:
@@ -56,6 +74,7 @@ Helpers in `Heleket\Enum\PayoutStatus`.
 |---|---|---|
 | `createInvoice` | `POST /v1/payment` | PaymentClient |
 | `getInfo` (payment) | `POST /v1/payment/info` | PaymentClient |
+| `getAmlLinks` | `POST /v1/payment/aml-links` | PaymentClient |
 | `listHistory` (payment) | `POST /v1/payment/list` | PaymentClient |
 | `refund` | `POST /v1/payment/refund` | PaymentClient |
 | `resendWebhook` | `POST /v1/payment/resend` | PaymentClient |
@@ -66,7 +85,7 @@ Helpers in `Heleket\Enum\PayoutStatus`.
 | `refundBlockedWallet` | `POST /v1/wallet/blocked-address-refund` | PaymentClient |
 | `testWebhook` | `POST /v1/test-webhook/{payment\|wallet}` | PaymentClient |
 | `getBalance` | `POST /v1/balance` | PaymentClient |
-| `getExchangeRates` | `POST /v1/exchange-rate/{currency}/list` | PaymentClient |
+| `getExchangeRates` | `GET /v1/exchange-rate/{currency}/list` | PaymentClient |
 | `createPayout` | `POST /v1/payout` | PayoutClient |
 | `getInfo` (payout) | `POST /v1/payout/info` | PayoutClient |
 | `listHistory` (payout) | `POST /v1/payout/list` | PayoutClient |
@@ -84,7 +103,7 @@ Heleket's catalogue evolves. Always source the authoritative list from `listServ
 
 ## HTTP / signing reminders
 
-- All requests use `POST` (even reads).
+- Most requests use `POST` (even most reads). The only `GET` is `getExchangeRates` (`/v1/exchange-rate/{currency}/list`).
 - All requests include `merchant`, `sign`, and `Content-Type: application/json` headers.
 - `sign` = `md5(base64_encode(json_body) . apiKey)`. For no-arg endpoints, body and sign are computed over the empty string.
 - Webhook payload's `sign` field uses the same formula against the corresponding API key.

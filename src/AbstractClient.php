@@ -72,6 +72,37 @@ abstract class AbstractClient
             }
             $body = $encoded;
         }
+
+        return $this->send('POST', $path, $body);
+    }
+
+    /**
+     * Send an authenticated GET request and return the API result on success.
+     *
+     * For read-only endpoints that carry all their input in the path (e.g.
+     * exchange rates). There is no request body, so the signed bytes are the
+     * empty string — exactly like a POST with no params: sign = md5(apiKey).
+     *
+     * @param string $path Endpoint path, e.g. "/v1/exchange-rate/USD/list".
+     * @return array<string, mixed> The "result" field of the response.
+     *
+     * @throws ValidationException on HTTP 422.
+     * @throws ApiException on any other non-zero state.
+     */
+    protected function get(string $path): array
+    {
+        return $this->send('GET', $path, '');
+    }
+
+    /**
+     * Sign the exact body bytes, attach the auth headers, dispatch via the
+     * transport, and translate the response. Shared by post() and get() so the
+     * signing and error handling live in exactly one place.
+     *
+     * @return array<string, mixed> The "result" field of the response.
+     */
+    private function send(string $method, string $path, string $body): array
+    {
         $sign = $this->signer->sign($body, $this->config->getApiKey());
 
         $url = $this->config->getBaseUrl() . $path;
@@ -83,10 +114,10 @@ abstract class AbstractClient
         ];
 
         if ($this->config->isDebug()) {
-            $this->debugDumper->dumpRequest('POST', $url, $body);
+            $this->debugDumper->dumpRequest($method, $url, $body);
         }
 
-        $response = $this->transport->request('POST', $url, $headers, $body);
+        $response = $this->transport->request($method, $url, $headers, $body);
 
         if ($this->config->isDebug()) {
             $this->debugDumper->dumpResponse($response->getStatusCode(), $response->getBody());

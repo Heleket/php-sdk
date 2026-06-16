@@ -52,6 +52,28 @@ final class PaymentClient extends AbstractClient
     }
 
     /**
+     * AML/KYC/SoF questionnaire links for a blocked (locked) payment.
+     *
+     * Returns the questionnaire links the end user must complete to unblock a
+     * held payment. Look up by uuid OR order_id (server prioritises order_id
+     * when both are sent). Each item carries: link (the questionnaire URL to
+     * hand to the user), expired_at, and status (one of Enum\AmlLinkStatus:
+     * init | pending | completed | expired).
+     *
+     * @return array<string, mixed>
+     */
+    public function getAmlLinks(?string $uuid = null, ?string $orderId = null): array
+    {
+        if ($uuid === null && $orderId === null) {
+            throw new \InvalidArgumentException('Either $uuid or $orderId must be provided');
+        }
+        return $this->post('/v1/payment/aml-links', $this->compact([
+            'uuid'     => $uuid,
+            'order_id' => $orderId,
+        ]));
+    }
+
+    /**
      * Paginated payment history with optional date filtering.
      *
      * @return array<string, mixed>
@@ -199,10 +221,12 @@ final class PaymentClient extends AbstractClient
     /**
      * Exchange-rate list for a given fiat currency.
      *
+     * Read-only endpoint: issued as a GET with the currency in the path.
+     *
      * @return array<string, mixed>
      */
     public function getExchangeRates(string $currency): array
     {
-        return $this->post('/v1/exchange-rate/' . rawurlencode($currency) . '/list');
+        return $this->get('/v1/exchange-rate/' . rawurlencode($currency) . '/list');
     }
 }

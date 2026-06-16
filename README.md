@@ -58,7 +58,7 @@ Full reference lives in [`docs/`](docs/README.md):
 ```
 src/         Production code — zero dependencies beyond ext-curl, ext-json
 tests/       PHPUnit unit tests + FakeTransport for offline testing
-examples/    Ten runnable scripts (01..10) demonstrating every endpoint
+examples/    Eleven runnable scripts (01..11) demonstrating every endpoint
 bin/         heleket-webhook-inspect — CLI to verify and dump any webhook payload
 docker/      php:7.4-cli-alpine with Composer baked in
 docs/        Full module documentation in English

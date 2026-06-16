@@ -22,7 +22,7 @@ enums, so it installs on legacy hosts).
 |---|---|
 | `src/` | Production code (shipped, along with `bin/` and `AGENTS.md`). |
 | `tests/` | PHPUnit unit tests + `tests/Fakes/FakeTransport.php` for offline HTTP. |
-| `examples/` | Ten runnable scripts (`01`..`10`), one per endpoint. Need `.env`. |
+| `examples/` | Eleven runnable scripts (`01`..`11`), one per endpoint. Need `.env`. |
 | `bin/heleket-webhook-inspect` | CLI to verify/dump a webhook payload. |
 | `docs/` | Full English reference (architecture, every endpoint, webhooks, …). |
 | `Makefile` | `make qa`, `make test`, `make stan`, `make cs-fix`, examples, Docker. |
