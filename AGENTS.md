@@ -22,7 +22,7 @@ enums, so it installs on legacy hosts).
 |---|---|
 | `src/` | Production code (shipped, along with `bin/` and `AGENTS.md`). |
 | `tests/` | PHPUnit unit tests + `tests/Fakes/FakeTransport.php` for offline HTTP. |
-| `examples/` | Eleven runnable scripts (`01`..`11`), one per endpoint. Need `.env`. |
+| `examples/` | Twelve runnable scripts (`01`..`12`), one per endpoint. Need `.env`. |
 | `bin/heleket-webhook-inspect` | CLI to verify/dump a webhook payload. |
 | `docs/` | Full English reference (architecture, every endpoint, webhooks, …). |
 | `Makefile` | `make qa`, `make test`, `make stan`, `make cs-fix`, examples, Docker. |
@@ -98,6 +98,10 @@ Examples read credentials from `.env` (copy `.env.example`).
   [`docs/06-webhooks.md`](docs/06-webhooks.md).
 - **Two separate API keys.** Payments and payouts use different keys; a webhook
   of the wrong kind fails verification. `Client::payment()` vs `Client::payout()`.
+- **Refund is the cross-key exception.** `/v1/payment/refund` is a payment-domain
+  path but is signed with the **payout** key, so it lives on
+  `PayoutClient::refund()`. `PaymentClient::refund()` is a deprecated stub that
+  throws `\BadMethodCallException`.
 - **Always verify webhook signatures** before trusting a payload; whitelist
   Heleket's source IP `31.133.220.8`.
 - **Never log API keys.** `DebugDumper` logs method, URL, and body only — never

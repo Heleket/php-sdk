@@ -223,6 +223,23 @@ final class PaymentClientTest extends TestCase
         $client->getAmlLinks();
     }
 
+    public function testRefundIsDeprecatedAndDirectsToPayoutClient(): void
+    {
+        // /v1/payment/refund is now signed with the payout key, so refund moved
+        // to PayoutClient. The old PaymentClient::refund() must fail loudly with
+        // migration guidance rather than silently signing with the wrong key.
+        $transport = new FakeTransport();
+        $client = $this->makeClient($transport);
+
+        try {
+            $client->refund(['uuid' => 'inv-1', 'address' => 'X', 'is_subtract' => true]);
+            self::fail('Expected BadMethodCallException');
+        } catch (\BadMethodCallException $exception) {
+            self::assertStringContainsString('PayoutClient::refund', $exception->getMessage());
+            self::assertSame([], $transport->getRequests(), 'No HTTP request should have been issued');
+        }
+    }
+
     private function makeClient(FakeTransport $transport): PaymentClient
     {
         return new PaymentClient(new Config(self::MERCHANT_ID, self::API_KEY), $transport);

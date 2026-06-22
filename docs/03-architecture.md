@@ -85,6 +85,9 @@ $sign  ──►  HTTP header `sign: <hex>`
 
 The same `Signer` is used to **produce** outgoing request signatures and to **verify** incoming webhook signatures. The math is identical; only the key changes (payment key vs payout key).
 
+> One endpoint crosses the divide: `/v1/payment/refund` is a payment-domain path
+> signed with the **payout** key, so it lives on `PayoutClient::refund()`.
+
 ## Design choices
 
 - **No PSR-3 dependency.** A minimal `DebugDumper` writes to stderr. Wrapping a PSR-3 logger around the SDK is trivial for callers who want one.

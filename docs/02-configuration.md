@@ -11,6 +11,10 @@ Heleket has two distinct API keys:
 
 Each key is also used to verify **its own** webhooks (payment webhooks → payment key; payout webhooks → payout key).
 
+> **One cross-key exception:** `/v1/payment/refund` is a payment-domain path but is
+> signed with the **payout** API key, so it is exposed as `PayoutClient::refund()`.
+> `PaymentClient::refund()` is a deprecated stub that throws.
+
 ## Default construction
 
 ```php

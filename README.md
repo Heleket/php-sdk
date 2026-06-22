@@ -58,7 +58,7 @@ Full reference lives in [`docs/`](docs/README.md):
 ```
 src/         Production code — zero dependencies beyond ext-curl, ext-json
 tests/       PHPUnit unit tests + FakeTransport for offline testing
-examples/    Eleven runnable scripts (01..11) demonstrating every endpoint
+examples/    Twelve runnable scripts (01..12) demonstrating every endpoint
 bin/         heleket-webhook-inspect — CLI to verify and dump any webhook payload
 docker/      php:7.4-cli-alpine with Composer baked in
 docs/        Full module documentation in English
@@ -82,7 +82,7 @@ make help                 # Full target list
 - **Always verify webhook signatures.** See [docs/06-webhooks.md](docs/06-webhooks.md). Never trust the payload otherwise.
 - **Whitelist Heleket's webhook source IP `31.133.220.8`** at your firewall or reverse proxy.
 - **Never log raw API keys** — the debug dumper logs only the request method, URL, and body (never headers), but a misconfigured logger wrapping the SDK can still capture credentials.
-- **Two separate API keys** — payments and payouts. Don't mix them up; webhooks of the wrong kind will fail verification.
+- **Two separate API keys** — payments and payouts. Don't mix them up; webhooks of the wrong kind will fail verification. (One exception: `/v1/payment/refund` uses the **payout** key — call `PayoutClient::refund()`.)
 
 ## Releasing
 

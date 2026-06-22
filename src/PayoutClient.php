@@ -35,6 +35,24 @@ final class PayoutClient extends AbstractClient
     }
 
     /**
+     * Refund a paid invoice in full or in part.
+     *
+     * Hits POST /v1/payment/refund but is signed with the PAYOUT API key, so it
+     * lives on PayoutClient rather than PaymentClient.
+     *
+     * Required: address, is_subtract; one of uuid / order_id.
+     *
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
+     * @throws ValidationException
+     * @throws ApiException
+     */
+    public function refund(array $params): array
+    {
+        return $this->post('/v1/payment/refund', $params);
+    }
+
+    /**
      * Look up a payout by uuid OR order_id.
      *
      * @return array<string, mixed>

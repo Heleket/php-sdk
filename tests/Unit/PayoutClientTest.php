@@ -67,4 +67,33 @@ final class PayoutClientTest extends TestCase
         self::assertSame('https://api.heleket.com/v1/transfer/to-personal', $requests[0]['url']);
         self::assertSame('https://api.heleket.com/v1/transfer/to-business', $requests[1]['url']);
     }
+
+    public function testRefundPostsToPaymentRefundSignedWithPayoutKey(): void
+    {
+        $transport = (new FakeTransport())->enqueueJson([
+            'state'  => 0,
+            'result' => ['uuid' => 'inv-1', 'status' => 'refund_process'],
+        ]);
+        $client = new PayoutClient(new Config(self::MERCHANT_ID, self::API_KEY), $transport);
+
+        $client->refund([
+            'uuid'        => 'inv-1',
+            'address'     => 'TBaCkAdDrEsS',
+            'is_subtract' => true,
+        ]);
+
+        $request = $transport->getLastRequest();
+        self::assertSame('POST', $request['method']);
+        self::assertSame('https://api.heleket.com/v1/payment/refund', $request['url']);
+
+        $expectedBody = (string) json_encode([
+            'uuid'        => 'inv-1',
+            'address'     => 'TBaCkAdDrEsS',
+            'is_subtract' => true,
+        ], JSON_UNESCAPED_UNICODE);
+        self::assertSame($expectedBody, $request['body']);
+
+        // The whole point of the move: refund is signed with the PAYOUT key.
+        self::assertSame(md5(base64_encode($expectedBody) . self::API_KEY), $request['headers']['sign']);
+    }
 }

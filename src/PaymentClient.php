@@ -145,16 +145,26 @@ final class PaymentClient extends AbstractClient
     }
 
     /**
-     * Refund a paid invoice in full or in part.
+     * Refund a paid invoice — MOVED to PayoutClient.
      *
-     * Required: address, is_subtract; one of uuid/order_id.
+     * The /v1/payment/refund endpoint is now signed with the PAYOUT API key,
+     * which a PaymentClient does not hold, so this method can no longer sign a
+     * valid request. It throws to fail loudly instead of silently signing with
+     * the wrong key. Use {@see PayoutClient::refund()} instead.
+     *
+     * @deprecated since 2.2.0 — use PayoutClient::refund(); /v1/payment/refund is now signed with the payout key.
      *
      * @param array<string, mixed> $params
      * @return array<string, mixed>
+     * @throws \BadMethodCallException always.
      */
     public function refund(array $params): array
     {
-        return $this->post('/v1/payment/refund', $params);
+        throw new \BadMethodCallException(
+            'PaymentClient::refund() is no longer supported: /v1/payment/refund is now '
+            . 'signed with the payout API key. Use PayoutClient::refund() instead — '
+            . 'e.g. Client::payout($payoutApiKey, $merchantId)->refund($params).'
+        );
     }
 
     /**

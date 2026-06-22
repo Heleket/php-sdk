@@ -76,7 +76,6 @@ AmlLinkStatus::isSuccessful($status);
 | `getInfo` (payment) | `POST /v1/payment/info` | PaymentClient |
 | `getAmlLinks` | `POST /v1/payment/aml-links` | PaymentClient |
 | `listHistory` (payment) | `POST /v1/payment/list` | PaymentClient |
-| `refund` | `POST /v1/payment/refund` | PaymentClient |
 | `resendWebhook` | `POST /v1/payment/resend` | PaymentClient |
 | `listServices` (payment) | `POST /v1/payment/services` | PaymentClient |
 | `createStaticWallet` | `POST /v1/wallet` | PaymentClient |
@@ -87,6 +86,7 @@ AmlLinkStatus::isSuccessful($status);
 | `getBalance` | `POST /v1/balance` | PaymentClient |
 | `getExchangeRates` | `GET /v1/exchange-rate/{currency}/list` | PaymentClient |
 | `createPayout` | `POST /v1/payout` | PayoutClient |
+| `refund` | `POST /v1/payment/refund` | PayoutClient (signed with payout key) |
 | `getInfo` (payout) | `POST /v1/payout/info` | PayoutClient |
 | `listHistory` (payout) | `POST /v1/payout/list` | PayoutClient |
 | `calculateWithdrawalAmount` | `POST /v1/payout/calculate` | PayoutClient |
@@ -107,6 +107,7 @@ Heleket's catalogue evolves. Always source the authoritative list from `listServ
 - All requests include `merchant`, `sign`, and `Content-Type: application/json` headers.
 - `sign` = `md5(base64_encode(json_body) . apiKey)`. For no-arg endpoints, body and sign are computed over the empty string.
 - Webhook payload's `sign` field uses the same formula against the corresponding API key.
+- `refund` is the only cross-key endpoint: a payment-domain path (`/v1/payment/refund`) signed with the **payout** key — exposed as `PayoutClient::refund()`. `PaymentClient::refund()` is a deprecated stub that throws.
 
 ## Next
 

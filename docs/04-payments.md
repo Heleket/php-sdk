@@ -140,19 +140,11 @@ Send the contents of a blocked wallet to a recovery address.
 $client->refundBlockedWallet($wallet['uuid'], 'TXyz...recovery-address...');
 ```
 
-## refund
+## refund — moved to PayoutClient
 
-`refund(array $params): array`  →  `POST /v1/payment/refund`
-
-Required: `address`, `is_subtract`; one of `uuid` / `order_id`.
-
-```php
-$client->refund([
-    'uuid'        => $invoiceUuid,
-    'address'     => 'TBaCkAdDrEsS',
-    'is_subtract' => true,
-]);
-```
+> **Deprecated.** `/v1/payment/refund` is now signed with the **payout** API key,
+> so refunds moved to `PayoutClient::refund()`. Calling `PaymentClient::refund()`
+> throws `\BadMethodCallException`. See [05 — Payouts API → refund](05-payouts.md#refund).
 
 ## resendWebhook
 

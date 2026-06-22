@@ -42,6 +42,22 @@ echo $payout['status'];   // typically "process" initially
 echo $payout['balance'];  // remaining merchant balance after deduction
 ```
 
+## refund
+
+`refund(array $params): array`  →  `POST /v1/payment/refund`
+
+Refund a paid invoice in full or in part. The endpoint sits under `/v1/payment/*`
+but is **signed with the payout API key**, so it lives on `PayoutClient` (not
+`PaymentClient`). Required: `address`, `is_subtract`; one of `uuid` / `order_id`.
+
+```php
+$client->refund([
+    'uuid'        => $invoiceUuid,
+    'address'     => 'TBaCkAdDrEsS',
+    'is_subtract' => true,
+]);
+```
+
 ## getInfo
 
 `getInfo(?string $uuid = null, ?string $orderId = null): array`  →  `POST /v1/payout/info`

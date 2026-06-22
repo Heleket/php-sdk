@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-06-22
+
+### Added
+- `PayoutClient::refund(array $params)` → `POST /v1/payment/refund`. Refunds are
+  now signed with the **payout** API key, so the method lives on `PayoutClient`.
+
+### Deprecated
+- `PaymentClient::refund()` now throws `\BadMethodCallException`. The Heleket API
+  signs `/v1/payment/refund` with the payout key, which a payment client does not
+  hold, so it can no longer sign a valid refund. Use `PayoutClient::refund()`
+  (e.g. `Client::payout($payoutApiKey, $merchantId)->refund($params)`). See
+  [`UPGRADING.md`](UPGRADING.md).
+
 ## [2.1.0] - 2026-06-16
 
 ### Added
@@ -39,5 +52,6 @@ Complete, ground-up rewrite. Not source-compatible with 1.x — see
 - **Zero runtime dependencies** (only `ext-curl`, `ext-json`).
 - SDK version reported in the `User-Agent` is resolved from Composer at runtime.
 
+[2.2.0]: https://github.com/Heleket/php-sdk/releases/tag/2.2.0
 [2.1.0]: https://github.com/Heleket/php-sdk/releases/tag/2.1.0
 [2.0.0]: https://github.com/Heleket/php-sdk/releases/tag/2.0.0

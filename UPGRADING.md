@@ -1,5 +1,26 @@
 # Upgrading
 
+## 2.1 → 2.2
+
+`refund` moved from `PaymentClient` to `PayoutClient`. The Heleket API now signs
+`POST /v1/payment/refund` with the **payout** API key, so a payment client can no
+longer produce a valid signature for it.
+
+`PaymentClient::refund()` is kept as a deprecated stub that throws
+`\BadMethodCallException`. Switch to `PayoutClient::refund()`:
+
+```php
+// Before (2.1 and earlier)
+$payment = Client::payment($paymentApiKey, $merchantId);
+$payment->refund(['uuid' => $invoiceUuid, 'address' => $addr, 'is_subtract' => true]);
+
+// After (2.2)
+$payout = Client::payout($payoutApiKey, $merchantId);
+$payout->refund(['uuid' => $invoiceUuid, 'address' => $addr, 'is_subtract' => true]);
+```
+
+Everything else is unchanged — this is an additive minor release.
+
 ## 1.x → 2.x
 
 Version 2.0 is a **complete, ground-up rewrite** of the SDK with a new, fully
