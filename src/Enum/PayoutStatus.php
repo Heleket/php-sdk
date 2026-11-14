@@ -7,7 +7,7 @@ namespace Heleket\Enum;
 /**
  * Heleket payout statuses.
  *
- * See https://doc.heleket.com/methods/payouts/payout-statuses
+ * See https://doc.heleket.hk/methods/payouts/payout-statuses
  */
 final class PayoutStatus
 {

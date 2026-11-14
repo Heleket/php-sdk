@@ -67,9 +67,10 @@ function heleket_config(string $apiKey): \Heleket\Config
     return new \Heleket\Config(
         env_require('HELEKET_MERCHANT_ID'),
         $apiKey,
-        env_optional('HELEKET_BASE_URL', \Heleket\Config::DEFAULT_BASE_URL),
+        env_optional('HELEKET_BASE_URL') ?: null,
         \Heleket\Config::DEFAULT_TIMEOUT_SECONDS,
-        env_optional('HELEKET_DEBUG', '0') === '1'
+        env_optional('HELEKET_DEBUG', '0') === '1',
+        env_optional('HELEKET_DOMAIN', \Heleket\Config::DEFAULT_DOMAIN)
     );
 }
 

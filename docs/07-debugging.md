@@ -14,7 +14,7 @@ $client->createInvoice([...]);
 Output goes to **stderr** (so `STDOUT` capture is unaffected):
 
 ```
-[heleket][→ POST https://api.heleket.com/v1/payment] {"amount":"15.00","currency":"USD","order_id":"order-42"}
+[heleket][→ POST https://api.heleket.hk/v1/payment] {"amount":"15.00","currency":"USD","order_id":"order-42"}
 [heleket][← 200] {"state":0,"result":{"uuid":"...", ...}}
 ```
 

@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/packagist/l/heleket/php-sdk)](LICENSE)
 [![CI](https://github.com/Heleket/php-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/Heleket/php-sdk/actions/workflows/ci.yml)
 
-The official PHP SDK for the [Heleket](https://heleket.com) cryptocurrency payment API. Covers the full documented surface (payments, payouts, balance, services, exchange rates), ships with unit tests, runnable examples, a debug mode, a webhook inspector CLI, and a Docker harness.
+The official PHP SDK for the [Heleket](https://heleket.hk) cryptocurrency payment API. Covers the full documented surface (payments, payouts, balance, services, exchange rates), ships with unit tests, runnable examples, a debug mode, a webhook inspector CLI, and a Docker harness.
 
 Built to be copied or `composer require`'d directly into your project. Zero runtime dependencies — only `ext-curl` and `ext-json` (bundled with PHP).
 
@@ -24,7 +24,7 @@ $invoice = $payment->createInvoice([
     'order_id' => 'order-42',
 ]);
 
-echo $invoice['url']; // → https://pay.heleket.com/pay/<uuid>
+echo $invoice['url']; // → https://pay.heleket.hk/pay/<uuid>
 ```
 
 ## Install

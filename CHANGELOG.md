@@ -4,6 +4,19 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-11-14
+
+### Added
+- `Config` `domain` option (`Config::DEFAULT_DOMAIN = 'heleket.hk'`) with
+  `getDomain()` / `withDomain()`. The effective base URL is `https://api.<domain>`
+  unless an explicit `baseUrl` is given. `Client::payment()` / `Client::payout()`
+  accept an optional `$domain` argument; examples read `HELEKET_DOMAIN`.
+
+### Changed
+- Default API host is now `api.heleket.hk` (was `api.heleket.com`); docs and
+  links point to `heleket.hk`. `Config::DEFAULT_BASE_URL` is kept for BC.
+- `Config` `$baseUrl` is now nullable (`null` = derive from `domain`).
+
 ## [2.2.0] - 2026-06-22
 
 ### Added

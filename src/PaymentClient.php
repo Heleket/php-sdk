@@ -15,7 +15,7 @@ use Heleket\Exception\ValidationException;
  * array, throws ValidationException on HTTP 422, and ApiException on any
  * other failure. Transport errors throw HttpException.
  *
- * See https://doc.heleket.com/methods/payments/ for parameter reference.
+ * See https://doc.heleket.hk/methods/payments/ for parameter reference.
  */
 final class PaymentClient extends AbstractClient
 {

@@ -1,5 +1,12 @@
 # Upgrading
 
+## 2.2 → 2.3
+
+The default API host moved from `api.heleket.com` to `api.heleket.hk`. No code
+changes are needed. To target another domain, pass `domain` to `Config` (or the
+`Client` factories): requests go to `https://api.<domain>`. An explicit `baseUrl`
+still wins, so pin `baseUrl: 'https://api.heleket.com'` to keep the old host.
+
 ## 2.1 → 2.2
 
 `refund` moved from `PaymentClient` to `PayoutClient`. The Heleket API now signs

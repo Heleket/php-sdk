@@ -37,7 +37,7 @@ final class PaymentClientTest extends TestCase
 
         $request = $transport->getLastRequest();
         self::assertSame('POST', $request['method']);
-        self::assertSame('https://api.heleket.com/v1/payment', $request['url']);
+        self::assertSame('https://api.heleket.hk/v1/payment', $request['url']);
         self::assertSame(self::MERCHANT_ID, $request['headers']['merchant']);
         self::assertSame('application/json', $request['headers']['Content-Type']);
         self::assertSame(Version::userAgent(), $request['headers']['User-Agent']);
@@ -144,7 +144,7 @@ final class PaymentClientTest extends TestCase
 
         $client->listHistory(null, null, 'abc=def');
 
-        self::assertSame('https://api.heleket.com/v1/payment/list?cursor=abc%3Ddef', $transport->getLastRequest()['url']);
+        self::assertSame('https://api.heleket.hk/v1/payment/list?cursor=abc%3Ddef', $transport->getLastRequest()['url']);
     }
 
     public function testGetExchangeRatesIssuesSignedGetRequestWithEmptyBody(): void
@@ -164,7 +164,7 @@ final class PaymentClientTest extends TestCase
 
         $request = $transport->getLastRequest();
         self::assertSame('GET', $request['method']);
-        self::assertSame('https://api.heleket.com/v1/exchange-rate/USD/list', $request['url']);
+        self::assertSame('https://api.heleket.hk/v1/exchange-rate/USD/list', $request['url']);
         self::assertSame('', $request['body'], 'A GET carries its input in the path, so the signed body is empty');
         self::assertSame(self::MERCHANT_ID, $request['headers']['merchant']);
         self::assertSame(md5(self::API_KEY), $request['headers']['sign']);
@@ -189,7 +189,7 @@ final class PaymentClientTest extends TestCase
 
         $request = $transport->getLastRequest();
         self::assertSame('POST', $request['method']);
-        self::assertSame('https://api.heleket.com/v1/payment/aml-links', $request['url']);
+        self::assertSame('https://api.heleket.hk/v1/payment/aml-links', $request['url']);
         self::assertSame(self::MERCHANT_ID, $request['headers']['merchant']);
 
         $expectedBody = (string) json_encode(['uuid' => 'uuid-1'], JSON_UNESCAPED_UNICODE);
@@ -208,7 +208,7 @@ final class PaymentClientTest extends TestCase
         $client->getAmlLinks(null, 'order-1');
 
         $request = $transport->getLastRequest();
-        self::assertSame('https://api.heleket.com/v1/payment/aml-links', $request['url']);
+        self::assertSame('https://api.heleket.hk/v1/payment/aml-links', $request['url']);
         self::assertSame(
             (string) json_encode(['order_id' => 'order-1'], JSON_UNESCAPED_UNICODE),
             $request['body']

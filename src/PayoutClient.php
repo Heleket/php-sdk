@@ -15,7 +15,7 @@ use Heleket\Exception\ValidationException;
  * ValidationException on 422, ApiException otherwise, HttpException on
  * transport failure.
  *
- * See https://doc.heleket.com/methods/payouts/ for parameter reference.
+ * See https://doc.heleket.hk/methods/payouts/ for parameter reference.
  */
 final class PayoutClient extends AbstractClient
 {

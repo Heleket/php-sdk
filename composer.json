@@ -4,17 +4,17 @@
     "type": "library",
     "license": "MIT",
     "keywords": ["heleket", "crypto", "payments", "payouts", "sdk", "api"],
-    "homepage": "https://doc.heleket.com/",
+    "homepage": "https://doc.heleket.hk/",
     "authors": [
         {
             "name": "Heleket",
-            "homepage": "https://heleket.com"
+            "homepage": "https://heleket.hk"
         }
     ],
     "support": {
         "issues": "https://github.com/Heleket/php-sdk/issues",
         "source": "https://github.com/Heleket/php-sdk",
-        "docs": "https://doc.heleket.com/"
+        "docs": "https://doc.heleket.hk/"
     },
     "require": {
         "php": ">=7.4",

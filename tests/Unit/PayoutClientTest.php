@@ -32,7 +32,7 @@ final class PayoutClientTest extends TestCase
         ]);
 
         self::assertSame('po-1', $result['uuid']);
-        self::assertSame('https://api.heleket.com/v1/payout', $transport->getLastRequest()['url']);
+        self::assertSame('https://api.heleket.hk/v1/payout', $transport->getLastRequest()['url']);
     }
 
     public function testCalculateWithdrawalAmountSerializesBooleanAsExpected(): void
@@ -64,8 +64,8 @@ final class PayoutClientTest extends TestCase
         $client->transferToBusiness('1.5', 'USDT');
 
         $requests = $transport->getRequests();
-        self::assertSame('https://api.heleket.com/v1/transfer/to-personal', $requests[0]['url']);
-        self::assertSame('https://api.heleket.com/v1/transfer/to-business', $requests[1]['url']);
+        self::assertSame('https://api.heleket.hk/v1/transfer/to-personal', $requests[0]['url']);
+        self::assertSame('https://api.heleket.hk/v1/transfer/to-business', $requests[1]['url']);
     }
 
     public function testRefundPostsToPaymentRefundSignedWithPayoutKey(): void
@@ -84,7 +84,7 @@ final class PayoutClientTest extends TestCase
 
         $request = $transport->getLastRequest();
         self::assertSame('POST', $request['method']);
-        self::assertSame('https://api.heleket.com/v1/payment/refund', $request['url']);
+        self::assertSame('https://api.heleket.hk/v1/payment/refund', $request['url']);
 
         $expectedBody = (string) json_encode([
             'uuid'        => 'inv-1',

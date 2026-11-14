@@ -43,9 +43,10 @@ use Heleket\PaymentClient;
 $config = new Config(
     merchantId: $merchantId,
     apiKey: $paymentApiKey,
-    baseUrl: 'https://api.heleket.com',
+    baseUrl: null,            // null → https://api.<domain>
     timeoutSeconds: 30,
-    debug: false
+    debug: false,
+    domain: 'heleket.hk'      // default
 );
 
 $payment = new PaymentClient($config);
@@ -56,7 +57,12 @@ $payment = new PaymentClient($config);
 ```php
 $debug = $config->withDebug(true);
 $slow  = $config->withTimeoutSeconds(60);
+$other = $config->withDomain('example.com'); // → https://api.example.com
 ```
+
+### Domain and base URL
+
+The `domain` option (default `heleket.hk`, `Config::DEFAULT_DOMAIN`) sets the API host: requests go to `https://api.<domain>`. An explicit `baseUrl` always wins over `domain`. The domain must be a bare host name (no scheme, no slashes); otherwise `InvalidArgumentException` is thrown. `Client::payment()` / `Client::payout()` accept it as an optional fourth argument: `Client::payment($key, $merchantId, false, 'example.com')`. The examples read it from the `HELEKET_DOMAIN` env var.
 
 ## Custom HTTP transport
 

@@ -6,7 +6,7 @@ tour — see [`docs/`](docs/README.md) for the full reference.
 
 ## What this is
 
-The official PHP SDK for the [Heleket](https://heleket.com) cryptocurrency
+The official PHP SDK for the [Heleket](https://heleket.hk) cryptocurrency
 payment API: payments, payouts, balance, exchange rates, services, and signed
 webhooks. **Zero runtime dependencies** — only `ext-curl` and `ext-json`.
 Minimum PHP **7.4** (typed properties, but no constructor promotion / native
@@ -14,7 +14,7 @@ enums, so it installs on legacy hosts).
 
 - Package: `heleket/php-sdk` on Packagist.
 - Namespace: `Heleket\` (PSR-4) → `src/`.
-- Upstream API docs: <https://doc.heleket.com>.
+- Upstream API docs: <https://doc.heleket.hk>.
 
 ## Repository map
 

@@ -59,7 +59,7 @@ If you see a 32-character lowercase hex string, the SDK is wired up correctly.
 
 ## Getting API credentials
 
-You need three pieces of information from <https://dash.heleket.com>:
+You need three pieces of information from <https://dash.heleket.hk>:
 
 1. **Merchant UUID** — Settings → API. Looks like `8b03432e-385b-4670-8d06-064591096795`.
 2. **Payment API key** — Business → Domain → API key. Used for invoices, balance, exchange rates, and **payment webhook verification**.

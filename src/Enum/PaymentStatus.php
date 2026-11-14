@@ -7,7 +7,7 @@ namespace Heleket\Enum;
 /**
  * Heleket payment statuses.
  *
- * See https://doc.heleket.com/methods/payments/payment-statuses
+ * See https://doc.heleket.hk/methods/payments/payment-statuses
  *
  * "Final" statuses are terminal — the invoice will not transition further.
  * "Intermediate" statuses may still change; keep polling or wait for the next
